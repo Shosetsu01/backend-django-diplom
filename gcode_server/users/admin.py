@@ -8,15 +8,15 @@ CustomUser = get_user_model()
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
 
-    list_display = ('email', 'first_name', 'last_name', 'group', 'faculty'
+    list_display = ('email', 'first_name', 'last_name', 'group',
                     'is_active', 'is_superuser',)
     list_filter = ('is_active', 'date_joined')
     fieldsets = (
         (None, {'fields': ('email', 'password',)}),
         ('Персональная информация', {'fields': ('first_name',
                                                 'last_name',
-                                                'phone',
-                                                )
+                                                'group',
+                                                'faculty',)
                                      }),
         ('Данные', {'fields': ('last_login',
                                'date_joined',)}),
@@ -27,7 +27,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    search_fields = ('email', 'first_name', 'last_name')
+    search_fields = ('email', 'first_name', 'last_name', 'group')
     ordering = ('-date_joined',)
 
 

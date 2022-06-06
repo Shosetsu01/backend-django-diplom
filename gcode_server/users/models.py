@@ -1,5 +1,7 @@
-from django.contrib.auth.models import (PermissionsMixin, AbstractBaseUser, BaseUserManager)
 from django.db import models
+from django.contrib.auth.models import (AbstractBaseUser,
+                                        PermissionsMixin,
+                                        BaseUserManager)
 from django.utils import timezone
 
 
@@ -38,9 +40,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField('First Name', max_length=30)
     last_name = models.CharField('Last Name', max_length=30)
     group = models.CharField('Group', max_length=6)
-    faculty = models.CharField('Faculty', max_length=30)
-    is_staff = models.BooleanField('Is Staff', default=False, help_text='If user is staff')
-    is_active = models.BooleanField('Is Active', default=False, help_text='Is user is active')
+    faculty = models.CharField('Faculty', max_length=60)
+    # phone = models.CharField('Phone', max_length=30, blank=True)
+    #company = models.ForeignKey(Company,
+    #                            on_delete=models.CASCADE,
+    #                            null=True,
+    #                            blank=True)
+    is_staff = models.BooleanField('Is Staff', default=False, help_text='If user is staff') # NoQa
+    is_active = models.BooleanField('Is Active', default=False, help_text='Is user is active') # NoQa
     date_joined = models.DateTimeField('Date Joined', default=timezone.now)
 
     USERNAME_FIELD = 'email'

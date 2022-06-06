@@ -1,5 +1,5 @@
 """
-ASGI config for user_account project.
+ASGI config for gcode_server project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'user_account.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gcode_server.settings')
 
 application = get_asgi_application()
