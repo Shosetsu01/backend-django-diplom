@@ -5,6 +5,11 @@ from django.contrib.auth.admin import UserAdmin
 CustomUser = get_user_model()
 
 
+# @admin.action(description='Mark selected stories as published')
+# def make_published(UserAdmin, request, queryset):
+#     queryset.update(status='p')
+
+
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
 

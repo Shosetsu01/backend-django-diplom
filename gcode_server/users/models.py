@@ -47,7 +47,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #                            null=True,
     #                            blank=True)
     is_staff = models.BooleanField('Is Staff', default=False, help_text='If user is staff') # NoQa
-    is_active = models.BooleanField('Is Active', default=False, help_text='Is user is active') # NoQa
+    is_active = models.BooleanField('Is Active', default=True, help_text='Is user is active') # NoQa
     date_joined = models.DateTimeField('Date Joined', default=timezone.now)
 
     USERNAME_FIELD = 'email'
