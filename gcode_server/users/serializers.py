@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
 
-from .models import CustomUser
+from .models import CustomUser, Groups, News, LastWinners, Archive, DuelParticipatingNow, CommandParticipatingNow
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -53,3 +53,58 @@ class UserCreateSerializer(serializers.ModelSerializer):
                   'last_name',
                   'group',
                   'faculty')
+
+
+class GroupsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Groups
+        fields = ('name', 'faculty')
+
+
+class NewsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = News
+        fields = ('date', 'title', 'text')
+
+
+class LastWinnersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LastWinners
+        fields = ('name', 'group', 'lineOne', 'lineTwo',
+                  'lineThree', 'lineFour', 'lineFive')
+
+
+class ArchiveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Archive
+        fields = ('year', 'semester', 'musketeers', 'duel',
+                  'groups')
+
+
+class CommandCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommandParticipatingNow
+        fields = ('name', 'group', 'firstPeople', 'secondPeople',
+                  'thirdPeople', 'fourthPeople', 'fifthPeople')
+
+    def create(self, validated_data):
+        return CommandParticipatingNow.objects.create(**validated_data)
+
+
+class DuelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DuelParticipatingNow
+        fields = ('id', 'firstPeople', 'groupFirst', 'secondPeople',
+                  'groupSecond', 'acceptDuel')
+
+    def create(self, validated_data):
+        return DuelParticipatingNow.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.firstPeople = validated_data.get('firstPeople', instance.firstPeople)
+        instance.groupFirst = validated_data.get('groupFirst', instance.groupFirst)
+        instance.secondPeople = validated_data.get('secondPeople', instance.secondPeople)
+        instance.groupSecond = validated_data.get('groupSecond', instance.groupSecond)
+        instance.acceptDuel = validated_data.get('acceptDuel', instance.acceptDuel)
+        instance.save()
+        return instance

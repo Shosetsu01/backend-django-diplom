@@ -1,17 +1,17 @@
 from django.contrib.auth import authenticate, get_user_model
 
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.generics import ListAPIView, UpdateAPIView, GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.authtoken.models import Token
 
 from .serializers import *
 
-
 CustomUser = get_user_model()
+
 
 @api_view(["POST"])
 @permission_classes((AllowAny,))
@@ -38,7 +38,7 @@ def login(request):
 
     if user and user.is_active is False:
         return Response({'detail': 'User is not active'},
-                            status=status.HTTP_403_FORBIDDEN)
+                        status=status.HTTP_403_FORBIDDEN)
 
     if not user:
         return Response({'detail': 'Incorrect account login information'},
@@ -78,3 +78,82 @@ class UserList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserCreateSerializer
     queryset = CustomUser.objects.all()
+    pagination_class = None
+
+
+class GroupsViewSet(ListAPIView):
+    queryset = Groups.objects.all()
+    serializer_class = GroupsSerializer
+    pagination_class = None
+
+
+class NewsViewSet(ListAPIView):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+    pagination_class = None
+
+
+class LastWinnersViewSet(ListAPIView):
+    queryset = LastWinners.objects.all()
+    serializer_class = LastWinnersSerializer
+    pagination_class = None
+
+
+class ArchiveViewSet(ListAPIView):
+    queryset = Archive.objects.all()
+    serializer_class = ArchiveSerializer
+    pagination_class = None
+
+
+class CommandCreateViewSet(generics.CreateAPIView):
+    serializer_class = CommandCreateSerializer
+    queryset = CommandParticipatingNow.objects.all()
+
+
+class CommandViewSet(ListAPIView):
+    serializer_class = CommandCreateSerializer
+    queryset = CommandParticipatingNow.objects.all()
+    pagination_class = None
+
+
+class DuelViewSet(ListAPIView):
+    serializer_class = DuelSerializer
+    queryset = DuelParticipatingNow.objects.all()
+    pagination_class = None
+
+
+class AddDuelViewSet(generics.CreateAPIView):
+    serializer_class = DuelSerializer
+    queryset = DuelParticipatingNow.objects.all()
+
+
+class UpdateDuelViewSet(UpdateAPIView):
+    serializer_class = DuelSerializer
+    queryset = DuelParticipatingNow.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "acceptDuel update true"})
+
+        else:
+            return Response({"message": "acceptDuel update false"})
+
+
+class DeleteDuelViewSet(generics.DestroyAPIView):
+    serializer_class = DuelSerializer
+    queryset = DuelParticipatingNow.objects.all()
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            instance.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({"message": "delete false"})
+

@@ -140,8 +140,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination', # NoQa
-    'PAGE_SIZE': 7
 }
 
 AUTH_USER_MODEL = 'users.CustomUser'
